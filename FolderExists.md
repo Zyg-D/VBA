@@ -23,10 +23,18 @@ Public Function DirExists3(sDir As String) As Boolean
 End Function
 
 ' This function is bad, because it returns True when "" is passed
-' On Error Resume Next, because of these cases: "//"; "//"
+' On Error Resume Next, because of these cases: "//"; "\\"
 Public Function DirExists4(sDir As String) As Boolean
   On Error Resume Next
   DirExists4 = Len(Dir(sDir, vbDirectory)) > 0
+  On Error GoTo 0
+End Function
+
+' This function is bad, because it returns True when "" is passed
+' On Error Resume Next, because of these cases: "//"; "\\"
+Public Function DirExists5(sDir As String) As Boolean
+  'On Error Resume Next
+  DirExists5 = Dir(sDir, vbDirectory) <> ""
   On Error GoTo 0
 End Function
 ```
@@ -51,10 +59,11 @@ Sub tst()
 '  "C:/Temp" & ChrW(261) & "/" 'ChrW(261)=Letter A with ogonek
 '  "C:\Temp" & ChrW(261) & "\" 'ChrW(261)=Letter A with ogonek
 
-  Dim s As String: s = "C:\Temp" & ChrW(261) & "\" 'ChrW(261)=Letter A with ogonek
+  Dim s As String: s = "AA"
   Debug.Print "1 " & DirExists(s) & vbTab _
             & "2 " & DirExists2(s) & vbTab _
             & "3 " & DirExists3(s) & vbTab _
-            & "4 " & DirExists4(s)
+            & "4 " & DirExists4(s) & vbTab _
+            & "5 " & DirExists5(s)
 End Sub
 ```
