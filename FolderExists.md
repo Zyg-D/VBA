@@ -1,5 +1,6 @@
 performance not tested, the first function is the 
 ```vba 
+' This also checks the current directory (CurDir), not only the supplied path
 Public Function DirExists(sDir As String) As Boolean
     Dim oFSO As Object: Set oFSO = CreateObject("Scripting.FileSystemObject")
     DirExists = oFSO.FolderExists(sDir)
