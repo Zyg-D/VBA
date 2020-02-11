@@ -1,0 +1,20 @@
+```vba
+Public Function DirExists(sDir As String) As Boolean
+    Dim oFSO As Object: Set oFSO = CreateObject("Scripting.FileSystemObject")
+    DirExists = oFSO.FolderExists(sDir)
+End Function
+```
+
+Public Function DirExists2(sDir As String) As Boolean
+    On Error Resume Next
+    DirExists2 = ((GetAttr(sDir) And vbDirectory) = vbDirectory)
+    On Error GoTo 0
+End Function
+
+Public Function DirExists3(sDir As String) As Boolean
+  Err.Clear
+  On Error Resume Next
+  ChDir (sDir)
+  DirExists3 = (Err.Number = 0)
+  On Error GoTo 0
+End Function
