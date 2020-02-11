@@ -33,7 +33,7 @@ End Function
 ' This function is bad, because it returns True when "" is passed
 ' On Error Resume Next, because of these cases: "//"; "\\"
 Public Function DirExists5(sDir As String) As Boolean
-  'On Error Resume Next
+  On Error Resume Next
   DirExists5 = Dir(sDir, vbDirectory) <> ""
   On Error GoTo 0
 End Function
