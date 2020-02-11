@@ -5,6 +5,7 @@ Public Function DirExists(sDir As String) As Boolean
     DirExists = oFSO.FolderExists(sDir)
 End Function
 
+' On Error Resume Next, because of these cases: "AA"; "::"; "//"; "\\"; ""
 Public Function DirExists2(sDir As String) As Boolean
     On Error Resume Next
     DirExists2 = ((GetAttr(sDir) And vbDirectory) = vbDirectory)
@@ -12,6 +13,7 @@ Public Function DirExists2(sDir As String) As Boolean
 End Function
 
 ' This also changes the current directory, which is not really used, so np
+' On Error Resume Next, because of these cases: "AA"; "::"; "//"; "\\"; ""
 Public Function DirExists3(sDir As String) As Boolean
   Err.Clear
   On Error Resume Next
@@ -19,28 +21,40 @@ Public Function DirExists3(sDir As String) As Boolean
   DirExists3 = (Err.Number = 0)
   On Error GoTo 0
 End Function
+
+' This function is bad, because it returns True when "" is passed
+' On Error Resume Next, because of these cases: "//"; "//"
+Public Function DirExists4(sDir As String) As Boolean
+  On Error Resume Next
+  DirExists4 = Len(Dir(sDir, vbDirectory)) > 0
+  On Error GoTo 0
+End Function
 ```
 Testing function:
 ```vba
 Sub tst()
-  Dim s As String: s = "c:/Temp"
+'  test cases:
+'  "C:"
+'  "C:/"
+'  "C:\"
+'  "C:/Temp"
+'  "C:\Temp"
+'  "C:/Temp/"
+'  "C:\Temp\"
+'  "::"
+'  "//"
+'  "\\"
+'  ""
+'  "AA"
+'  "C:/Temp" & ChrW(261) 'ChrW(261)=Letter A with ogonek
+'  "C:\Temp" & ChrW(261) 'ChrW(261)=Letter A with ogonek
+'  "C:/Temp" & ChrW(261) & "/" 'ChrW(261)=Letter A with ogonek
+'  "C:\Temp" & ChrW(261) & "\" 'ChrW(261)=Letter A with ogonek
+
+  Dim s As String: s = "C:\Temp" & ChrW(261) & "\" 'ChrW(261)=Letter A with ogonek
   Debug.Print "1 " & DirExists(s) & vbTab _
             & "2 " & DirExists2(s) & vbTab _
-            & "3 " & DirExists3(s)
+            & "3 " & DirExists3(s) & vbTab _
+            & "4 " & DirExists4(s)
 End Sub
-```
-Testing cases:
-```
-C:
-C:/
-C:\
-C:/Temp
-C:\Temp
-C:/Temp/
-C:\Temp\
-::
-//
-\\
-""
-AAA
 ```
