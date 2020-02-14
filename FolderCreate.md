@@ -23,10 +23,10 @@ End Function
 
 ```vba
 Function MakeDir(ByVal sDir As String)
-  Dim fso: Set fso = CreateObject("Scripting.FileSystemObject")
-  If Not fso.FolderExists(sDir) Then
-    MakeDir (fso.GetParentFolderName(sDir))
-    fso.CreateFolder sDir
+  Dim oFSO: Set oFSO = CreateObject("Scripting.FileSystemObject")
+  If Not oFSO.FolderExists(sDir) Then
+    MakeDir (oFSO.GetParentFolderName(sDir))
+    oFSO.CreateFolder sDir
   End If
 End Function
 ```
