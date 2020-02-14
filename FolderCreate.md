@@ -1,4 +1,6 @@
-Creates a folder together with parent folders, if needed. 
+Not tested for performance.
+
+**Opt.1.** Creates a folder together with parent folders, if needed. 
 "Waits" until `cmd` creates it (time-out at 2 seconds). 
 
 ```vba
@@ -14,6 +16,18 @@ End Function
 Public Function DirExists(sDir As String) As Boolean
   Dim oFSO As Object: Set oFSO = CreateObject("Scripting.FileSystemObject")
   DirExists = oFSO.FolderExists(sDir)
+End Function
+```
+
+**Opt.2.** Recursive VBA. 
+
+```vba
+Function MakeDir(ByVal sDir As String)
+  Dim fso: Set fso = CreateObject("Scripting.FileSystemObject")
+  If Not fso.FolderExists(sDir) Then
+    MakeDir (fso.GetParentFolderName(sDir))
+    fso.CreateFolder sDir
+  End If
 End Function
 ```
 
