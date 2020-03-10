@@ -1,4 +1,4 @@
-performance not tested, the first function is the 
+performance not tested, the first function is the best.
 ```vba 
 ' This also checks the current directory (CurDir), not only the supplied path
 Public Function DirExists(sDir As String) As Boolean
