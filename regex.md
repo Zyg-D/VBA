@@ -52,11 +52,11 @@ End Sub
 Sub re_replace()
   Dim re As Object: Set re = CreateObject("vbscript.regexp")
   With re
-    .Pattern = "hello"
+    .Pattern = "(h)ell(o)"
     .Global = 1 '1 = finds all matches, 0 (def) = only the 1st
     .IgnoreCase = 1 'def = 0
     .MultiLine = 1 '1 = ^$ surrounds lines instead of the whole str; def = 0
   End With
-  Debug.Print re.Replace("Hello hello World!", "Bye")
+  Debug.Print re.Replace("Hello hello World!", "Bye-$2")  'Bye-o Bye-o World!
 End Sub
 ```
